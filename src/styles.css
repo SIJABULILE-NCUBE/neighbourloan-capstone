@@ -105,6 +105,7 @@ body {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;
   border: 1px solid var(--color-border);
+  width: fit-content;
 }
 .trust-score { font-family: var(--font-mono); font-weight: 700; }
 .trust-badge--highly-trusted { border-color: var(--color-success); color: var(--color-success); }
@@ -118,7 +119,7 @@ body {
 }
 .trust-breakdown div { display: flex; justify-content: space-between; }
 .trust-breakdown dt { color: var(--color-text-muted); }
-.trust-breakdown dd { margin: 0; font-family: var(--font-mono); }
+.trust-breakdown dd { margin: 0 0 0 8px; font-family: var(--font-mono); }
 
 /* Detail screen */
 .back-link {

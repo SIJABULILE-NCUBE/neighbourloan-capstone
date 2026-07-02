@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/itemcard.tsx","./src/components/trustbadge.tsx","./src/data/items.ts","./src/data/types.ts","./src/lib/booking.ts","./src/lib/trust.ts","./src/screens/authscreen.tsx","./src/screens/bookingscreen.tsx","./src/screens/browsescreen.tsx","./src/screens/itemdetailscreen.tsx"],"version":"5.9.3"}
