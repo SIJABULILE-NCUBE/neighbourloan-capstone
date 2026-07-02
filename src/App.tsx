@@ -41,8 +41,11 @@ export function App() {
       <header className="app__header">
         <h1 className="app__logo">Neighbourloan</h1>
         <p className="app__tagline">Borrow what you need, from people nearby</p>
+        <p className="app__count">
+          {items.filter((i) => i.status !== "removed").length} items available near you
+        </p>
       </header>
-
+      
       <main className="app__main">
         {view.name === "browse" && (
           <BrowseScreen items={items} onSelectItem={(id) => setView({ name: "detail", itemId: id })} />
