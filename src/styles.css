@@ -30,6 +30,10 @@ body {
 }
 .app__logo { margin: 0; font-size: 1.6rem; letter-spacing: -0.02em; }
 .app__tagline { margin: 4px 0 0; color: var(--color-text-muted); font-size: 0.95rem; }
+.app__count {
+  margin: 10px 0 0; font-size: 0.8rem; color: var(--color-accent);
+  font-family: var(--font-mono);
+}
 
 .loading-screen {
   display: flex; align-items: center; justify-content: center;
@@ -40,8 +44,7 @@ body {
 .browse__controls {
   display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
 }
-.browse__controls input[type="search"],
-.browse__controls select {
+.browse__controls input[type="search"] {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   color: var(--color-text);
@@ -50,6 +53,15 @@ body {
   font-size: 0.95rem;
 }
 .browse__controls input[type="search"] { flex: 1; min-width: 200px; }
+
+.browse__category-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  color: var(--color-text-muted); padding: 8px 14px; border-radius: 20px;
+  cursor: pointer; font-size: 0.85rem; text-transform: capitalize;
+  white-space: nowrap;
+}
+.chip--active { background: var(--color-accent); color: white; border-color: var(--color-accent); }
 
 .browse__price-toggle { display: flex; gap: 4px; }
 .toggle {
@@ -85,9 +97,6 @@ body {
   padding: 0;
   color: inherit;
   font: inherit;
-  transition: border-color 0.15s ease;
-}
-.item-card {
   transform: translateY(0);
   transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -96,10 +105,9 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.35);
 }
-.item-card__image img { transition: transform 0.3s ease; }
+.item-card__image { position: relative; aspect-ratio: 4/3; background: #12141a; overflow: hidden; }
+.item-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
 .item-card:hover .item-card__image img { transform: scale(1.04); }
-.item-card__image { position: relative; aspect-ratio: 4/3; background: #12141a; }
-.item-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .item-card__placeholder {
   display: flex; align-items: center; justify-content: center;
   height: 100%; color: var(--color-text-muted); font-size: 0.85rem;
