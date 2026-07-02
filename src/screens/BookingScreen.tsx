@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Item } from "../data/types";
 import { calcNights, calcTotalCents, formatCents } from "../lib/booking";
+import { saveBooking } from "../lib/storage";
 
 interface Props {
   item: Item;
@@ -30,6 +31,13 @@ export function BookingScreen({ item, isAuthed, onRequestAuth, onBack, onConfirm
       onRequestAuth();
       return;
     }
+    saveBooking({
+      id: `bkg_${Date.now()}`,
+      itemId: item.id,
+      itemTitle: item.title,
+      range: { startISO: startDate, endISO: endDate },
+      confirmedAtISO: new Date().toISOString(),
+    });
     setStep("done");
   }
 
