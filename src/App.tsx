@@ -1,34 +1,89 @@
-/* ============================================================
- * This is a near-empty shell ON PURPOSE.
- *
- * We are not giving you a component structure, a router, a state
- * pattern, or a design. Those are the decisions being assessed —
- * designing them is your job, and defending them in your Decision
- * Log is the point.
- *
- * Delete this placeholder. Build the product described in BRIEF.md.
- * Type your data using src/data/types.ts. Load it via
- * src/data/items.ts (or reshape that — your call).
- * ============================================================ */
+import { useEffect, useState } from "react";
+import type { Item, AuthUser } from "./data/types";
+import { fetchItems } from "./data/items";
+import { BrowseScreen } from "./screens/BrowseScreen";
+import { ItemDetailScreen } from "./screens/ItemDetailScreen";
+import { BookingScreen } from "./screens/BookingScreen";
+import { AuthScreen } from "./screens/AuthScreen";
+import "./styles.css";
 
-import { ITEMS } from "./data/items.ts";
+type AuthUser2 = { name: string };
+
+type View =
+  | { name: "browse" }
+  | { name: "detail"; itemId: string }
+  | { name: "booking"; itemId: string }
+  | { name: "auth"; itemId: string };
 
 export function App() {
+  const [items, setItems] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [view, setView] = useState<View>({ name: "browse" });
+  const [user, setUser] = useState<AuthUser2 | null>(null);
+
+  useEffect(() => {
+    fetchItems().then((data) => {
+      setItems(data);
+      setLoading(false);
+    });
+  }, []);
+
+  function findItem(id: string): Item | undefined {
+    return items.find((i) => i.id === id);
+  }
+
+  if (loading) {
+    return <div className="loading-screen">Loading nearby items…</div>;
+  }
+
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", maxWidth: 720, margin: "0 auto", padding: 24 }}>
-      <h1>Founder Capstone — start here</h1>
-      <p>
-        Read <code>BRIEF.md</code> first. It is most of the assessment. Then delete
-        this file's contents and build the product.
-      </p>
-      <p>
-        There are <strong>{ITEMS.length}</strong> mock items wired up in{" "}
-        <code>src/data/items.ts</code>. Some have no photos, no price, no rating, or
-        are paused/removed. Handling those cases well is part of the craft score.
-      </p>
-      <p style={{ color: "#666" }}>
-        Do not ship this screen. This is scaffolding, not a starting design.
-      </p>
-    </main>
+    <div className="app">
+      <header className="app__header">
+        <h1 className="app__logo">Neighbourloan</h1>
+        <p className="app__tagline">Borrow what you need, from people nearby</p>
+      </header>
+
+      <main className="app__main">
+        {view.name === "browse" && (
+          <BrowseScreen items={items} onSelectItem={(id) => setView({ name: "detail", itemId: id })} />
+        )}
+
+        {view.name === "detail" && (() => {
+          const item = findItem(view.itemId);
+          if (!item) return <p>Item not found.</p>;
+          return (
+            <ItemDetailScreen
+              item={item}
+              onBack={() => setView({ name: "browse" })}
+              onBookNow={(id) => setView({ name: "booking", itemId: id })}
+            />
+          );
+        })()}
+
+        {view.name === "booking" && (() => {
+          const item = findItem(view.itemId);
+          if (!item) return <p>Item not found.</p>;
+          return (
+            <BookingScreen
+              item={item}
+              isAuthed={user !== null}
+              onRequestAuth={() => setView({ name: "auth", itemId: view.itemId })}
+              onBack={() => setView({ name: "detail", itemId: view.itemId })}
+              onConfirmed={() => setView({ name: "browse" })}
+            />
+          );
+        })()}
+
+        {view.name === "auth" && (
+          <AuthScreen
+            onAuthed={(name) => {
+              setUser({ name });
+              setView({ name: "booking", itemId: view.itemId });
+            }}
+            onCancel={() => setView({ name: "detail", itemId: view.itemId })}
+          />
+        )}
+      </main>
+    </div>
   );
 }
