@@ -36,23 +36,47 @@
   decided this was an acceptable tradeoff for time saved, but it's a real
   limitation I'm naming rather than hiding.
 - What I changed and why: I kept the state-based approach but made sure it was
-  documented as a deliberate scope decision in DECISION-LOG.md, not an oversight.
+  documented as a deliberate scope decision in DECISION-LOG.md, not an
+  oversight.
 
 ## AI moment 3 (the one where AI was wrong) — Netlify deployment method
-- What I was trying to do: Deploy the app to a live URL as required by the brief.
+- What I was trying to do: Deploy the app to a live URL as required by the
+  brief.
 - The prompt I wrote: I asked how to deploy to Netlify and followed the
   suggested steps.
 - What the AI gave back: General Netlify deployment guidance, assuming I'd
   connect via GitHub from the start.
-- What was wrong / weak / risky about it: I'd actually used Netlify's drag-and-
-  drop "deploy" option first, which created a tiny, disconnected deployment (4
-  files, 156KB) that had nothing to do with my real app and wouldn't update when
-  I pushed new commits. The AI didn't catch this until I sent a screenshot
-  showing the deploy summary — it had assumed a GitHub-connected deploy without
-  confirming which method I'd actually used.
+- What was wrong / weak / risky about it: I'd actually used Netlify's
+  drag-and-drop "deploy" option first, which created a tiny, disconnected
+  deployment (4 files, 156KB) that had nothing to do with my real app and
+  wouldn't update when I pushed new commits. The AI didn't catch this until I
+  sent a screenshot showing the deploy summary — it had assumed a
+  GitHub-connected deploy without confirming which method I'd actually used.
 - What I changed and why: I deleted the drop-deployment, ran `npm run build`
   locally first to confirm the app compiled cleanly (it did — 40 modules, no
   type errors), then reconnected properly via "Import an existing project" →
   "Deploy with GitHub," set the build command to `npm run build` and publish
   directory to `dist`. This is now connected so every push auto-redeploys,
   which is what the brief actually requires.
+
+## AI moment 4 — Sourcing accurate mock photos
+- What I was trying to do: Replace random, mismatched placeholder photos
+  (e.g. a car dashboard shown for "Stand Mixer," a cat statue for "Pressure
+  Washer") with images that actually matched each item.
+- The prompt I wrote: I asked for correctly-matched images and initially went
+  along with keyword-based placeholder services suggested to me — first
+  Picsum, then LoremFlickr.
+- What was wrong / weak / risky about it: Both services returned inconsistent,
+  sometimes completely unrelated images despite specific keywords. The AI
+  treated these free keyword-matching services as more reliable than they
+  actually are, and I initially trusted that assumption instead of checking
+  the actual rendered output myself first.
+- What I changed and why: I switched to manually selecting real photos from
+  Pexels for each item. I also caught a second mistake along the way — I
+  initially copied Unsplash and iStock *page* URLs instead of direct image
+  file URLs, which don't render in an `<img>` tag at all. I verified this by
+  checking what the URL actually pointed to (a webpage vs. an image file)
+  before accepting it. This was slower than trusting an automated service, but
+  it's the only way to guarantee accuracy for something the brief doesn't even
+  require — a reminder that "AI-suggested and free" isn't the same as
+  "correct."

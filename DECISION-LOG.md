@@ -1,7 +1,7 @@
 # Decision Log
 
 Every meaningful engineering decision from this sprint, with real tradeoffs —
-not generic justifications. Minimum 8 entries required; this log has 9.
+not generic justifications. Minimum 8 entries required; this log has 11.
 
 ---
 
@@ -169,3 +169,57 @@ not generic justifications. Minimum 8 entries required; this log has 9.
 - **What I gave up:** A small amount of time that could have gone toward
   features — but this was a two-minute decision, not a distraction from the
   real work.
+
+---
+
+## Decision: Added a "My Bookings" screen backed by localStorage
+- **Context:** Confirmed bookings were being saved to localStorage, but there
+  was no way to actually see that persistence working without opening browser
+  DevTools — not something a real user, or an assessor, should have to do.
+- **Options I considered:**
+  1. Leave persistence invisible, provable only via DevTools.
+  2. Build a small dedicated screen that reads and lists saved bookings.
+- **What I chose and why:** Option 2. A visible "My Bookings" view makes the
+  persistence feature real and demonstrable, not just a technical detail
+  buried in browser storage. It also nudges the app slightly closer to how a
+  real product would work — users expect to see their own bookings somewhere.
+- **What I gave up:** A small amount of extra time versus leaving it
+  invisible — worth it for something this demonstrable in a live demo.
+
+---
+
+## Decision: Replaced the category `<select>` dropdown with chip buttons
+- **Context:** The initial category filter used a native `<select>` element,
+  which is functional but visually generic and easy to overlook next to the
+  price toggle already styled as buttons.
+- **Options I considered:**
+  1. Keep the native dropdown — fastest, most familiar pattern.
+  2. Replace it with a row of toggle-style chip buttons, matching the price
+     filter's existing style.
+- **What I chose and why:** Option 2. Chips make all category options visible
+  at once rather than hidden behind a click, and they're visually consistent
+  with the price filter already in the UI. Each chip is a real `<button>`, so
+  keyboard and screen-reader behaviour is preserved — this wasn't a purely
+  cosmetic swap, I checked it didn't regress accessibility.
+- **What I gave up:** A small amount of horizontal space on narrow screens,
+  since chips wrap across multiple lines with several categories selected —
+  an acceptable tradeoff for the visual and interaction improvement.
+
+---
+
+## Decision: Sourced real photos manually instead of relying on placeholder image APIs
+- **Context:** Initial mock photos used keyword-based placeholder services
+  (Picsum, then LoremFlickr), which returned images unrelated to their items
+  despite specific search terms (e.g. a cat statue for "Pressure Washer").
+- **Options I considered:**
+  1. Keep iterating on keywords, hoping for a better match.
+  2. Accept the mismatches, since the brief doesn't require photo accuracy.
+  3. Manually source and link real, correctly-matched photos myself.
+- **What I chose and why:** Option 3, after concluding that automated
+  keyword-matching services fundamentally can't guarantee accuracy — no
+  amount of keyword tuning fixes that. Manually verifying each image before
+  using it was the only reliable method, even though it cost more time than
+  the brief strictly required.
+- **What I gave up:** Time that could have gone toward the Loom or further
+  feature work — but a visually accurate product left a stronger impression
+  in testing than a faster but mismatched one.
