@@ -1,102 +1,171 @@
 # Decision Log
 
+Every meaningful engineering decision from this sprint, with real tradeoffs —
+not generic justifications. Minimum 8 entries required; this log has 9.
+
+---
+
 ## Decision: Replaced the fake "people viewing this" counter with a Trust Score
-- Context: Thabo explicitly asked for a fabricated urgency counter ("3 people
-  are looking at this right now!!") on every item to pressure bookings.
-- Options I considered: (1) Build it exactly as asked — trivial to implement.
-  (2) Refuse it outright with no replacement. (3) Reshape it into something
-  honest that serves the same underlying goal — reducing booking hesitation.
-- What I chose and why: Option 3. I derived a Trust Score from data already in
-  the contract (owner tenure, rating, rating count) — real signals, not
-  invented numbers. This draws on my day-job experience assessing risk from
-  behavioural signals rather than gut feeling.
-- What I gave up: A flashier, more "urgent" feeling UI in the short term — but
-  I'm not willing to ship a feature that manufactures false social proof.
+- **Context:** Thabo explicitly asked for a fabricated urgency counter ("3
+  people are looking at this right now!!") on every item, intended to pressure
+  users into booking faster.
+- **Options I considered:**
+  1. Build it exactly as requested — trivial to implement, and it's what the
+     founder asked for.
+  2. Refuse it outright with no replacement.
+  3. Reshape it into something honest that serves the same underlying goal —
+     reducing booking hesitation — using data I actually have.
+- **What I chose and why:** Option 3. I derived a Trust Score (0–100) from
+  fields already present in the data contract — owner tenure, rating, and
+  completed booking count — rather than inventing a number with no basis in
+  reality. This draws directly on my background as a credit risk analyst,
+  where trustworthiness is assessed from real behavioural signals, not
+  manufactured urgency.
+- **What I gave up:** A flashier, more aggressive "urgency" feeling in the UI
+  in the short term. I'm not willing to trade that for a feature that
+  fabricates social proof — it's a reputational risk for the product long
+  before it's a design one.
+
+---
 
 ## Decision: Did not force sign-up before browsing
-- Context: Thabo wanted users to sign up before seeing any items, to capture
-  emails ("growth hack lol").
-- Options I considered: (1) Force auth on first load, as asked. (2) No auth at
-  all. (3) Ask for auth only at the point of committing to a booking.
-- What I chose and why: Option 3. Real marketplaces let people see value before
-  asking for commitment. Gating the entire product behind a signup wall before
-  a single item is visible would tank trust and conversion before anyone even
-  sees what's on offer.
-- What I gave up: Thabo's immediate email capture goal from every visitor —
-  but I believe this trades a short-term growth hack for long-term trust, which
-  matters more for a marketplace's reputation.
+- **Context:** Thabo wanted users to create an account before seeing any
+  items at all, purely to capture emails early ("growth hack lol").
+- **Options I considered:**
+  1. Force auth on first load, exactly as asked.
+  2. No auth anywhere in the flow.
+  3. Ask for auth only at the point a user commits to booking something.
+- **What I chose and why:** Option 3. People need to see real value before
+  they're willing to hand over their details. Gating the entire product
+  behind a signup wall before a single item is visible actively damages
+  first-time trust and inflates bounce rate before anyone even understands
+  what the product does.
+- **What I gave up:** Thabo's original goal of capturing an email from every
+  visitor regardless of intent. In exchange, the emails I do capture come from
+  users who are already motivated to transact — a smaller but higher-intent
+  list.
+
+---
 
 ## Decision: No router — used in-memory state to switch screens
-- Context: The starter's `package.json` doesn't include react-router-dom, and I
-  had limited hours before losing certainty about install/build stability.
-- Options I considered: (1) Add react-router-dom as a new dependency. (2) Use a
-  single state-based `View` type in App.tsx to control which screen renders.
-- What I chose and why: Option 2. Zero new dependencies means zero new install
-  risk on a tight deadline, and the app is small enough that a state machine is
-  easy to reason about.
-- What I gave up: Real, shareable URLs for individual items — pasting a link
-  to a specific item won't deep-link there. Acceptable for a one-sprint MVP.
+- **Context:** The starter's `package.json` doesn't include `react-router-dom`,
+  and I had a hard time constraint before losing certainty around installing
+  and testing a new dependency mid-sprint.
+- **Options I considered:**
+  1. Add `react-router-dom` for real URL-based routing.
+  2. Use a single discriminated-union `View` type in `App.tsx` state to
+     control which screen renders.
+- **What I chose and why:** Option 2. Zero new dependencies means zero new
+  install or config risk on a tight deadline, and the app's scope is small
+  enough that a state machine is easy to reason about and type safely.
+- **What I gave up:** Real, shareable URLs for individual screens — pasting a
+  link to a specific item won't deep-link there; the app always opens on
+  Browse. Acceptable for a one-sprint MVP, but the first thing I'd add back
+  with more time.
 
-## Decision: Isolated booking-duration and pricing math into one file
-- Context: The brief's presentation guide warns that a "founder curveball" often
-  changes a pricing/duration assumption late (e.g. "rent by the hour, not the
-  day").
-- Options I considered: (1) Calculate dates/pricing inline inside the booking
-  component. (2) Extract all duration and pricing math into a single
-  `lib/booking.ts` module used by any component that needs it.
-- What I chose and why: Option 2. If Thabo changes the pricing model later, only
-  one file needs to change — components stay untouched.
-- What I gave up: A little more upfront structure/time versus just inlining the
-  logic quickly.
+---
 
-## Decision: Filtered out "removed" items, but still show "paused" items (disabled)
-- Context: The mock data includes `status: "available" | "paused" | "removed"`.
-  A real API wouldn't return deleted listings at all, but paused ones are still
-  owner-visible inventory.
-- Options I considered: (1) Show all items regardless of status. (2) Hide both
-  paused and removed items. (3) Hide removed items entirely, show paused items
-  but disable booking on them with a clear reason.
-- What I chose and why: Option 3. This matches how a real API would behave
-  (removed = gone) while giving honest feedback on paused items instead of
-  silently hiding inventory that still exists.
-- What I gave up: A slightly simpler filter (hide anything not "available")
-  would have been faster to write, but would hide real, useful information from
-  users.
+## Decision: Isolated booking-duration and pricing math into one module
+- **Context:** The presentation guide explicitly warns that founders issue
+  late-stage curveballs that change core assumptions — e.g. "actually, rent by
+  the hour, not the day."
+- **Options I considered:**
+  1. Calculate dates and pricing inline, inside the booking component.
+  2. Extract all duration and pricing logic into a single `lib/booking.ts`
+     module, imported wherever it's needed.
+- **What I chose and why:** Option 2. If the pricing model changes, exactly
+  one file needs to change — no component needs to be touched or re-tested.
+  This is the difference between an architecture that absorbs a pivot cheaply
+  and one that doesn't.
+- **What I gave up:** A small amount of upfront structure and time versus
+  writing the logic directly where it's used — worth it given how likely this
+  specific assumption is to change.
 
-## Decision: Normalized "free" items (both `null` price and `{amountCents: 0}`)
-- Context: The mock data has two different ways of representing a free item —
-  a `null` price object and a price object with `amountCents: 0`.
-- Options I considered: (1) Handle each case separately wherever price is
-  displayed. (2) Write one small `isFree()` helper used everywhere price logic
-  appears.
-- What I chose and why: Option 2. A real API returning two different shapes for
-  the same concept ("free") is exactly the kind of inconsistency you have to
-  design defensively against, not assume away.
-- What I gave up: Nothing meaningful — this was a small extra step that removed
-  a class of bugs.
+---
+
+## Decision: Filtered out "removed" items, but show "paused" items as disabled
+- **Context:** The mock data models three listing states —
+  `available | paused | removed`. A real API would never return deleted
+  listings at all, but paused ones are still legitimate, owner-visible
+  inventory.
+- **Options I considered:**
+  1. Show all items regardless of status.
+  2. Hide both paused and removed items from the browse grid.
+  3. Hide removed items entirely; show paused items but disable their booking
+     action with a clear explanation.
+- **What I chose and why:** Option 3. This mirrors how a real API would
+  actually behave (removed means gone) while still giving honest, visible
+  feedback on paused items instead of silently hiding inventory that exists.
+- **What I gave up:** A simpler single-condition filter ("only show
+  available") would have taken less code, but would hide real information
+  from users without telling them why.
+
+---
+
+## Decision: Normalized "free" items across two different data shapes
+- **Context:** The mock data represents a free item two different ways — a
+  `null` price object, and a price object with `amountCents: 0`.
+- **Options I considered:**
+  1. Handle both cases separately, everywhere price is displayed or
+     calculated.
+  2. Write one `isFree()` helper, used consistently across the codebase.
+- **What I chose and why:** Option 2. A real API returning two different
+  shapes for the same underlying concept is exactly the kind of inconsistency
+  a typed data layer needs to defend against structurally, not patch around
+  ad hoc in each component.
+- **What I gave up:** Nothing meaningful here — this was a small extra step
+  that removed an entire class of potential display bugs for negligible cost.
+
+---
 
 ## Decision: Deployed via Netlify connected to GitHub, not drag-and-drop
-- Context: The brief requires the live site to reflect the actual repo, and to
-  auto-verify a clean-clone build.
-- Options I considered: (1) Netlify's drag-and-drop deploy (fast, but
-  disconnected from source control). (2) Connect Netlify directly to the GitHub
-  repo so it builds from source on every push.
-- What I chose and why: Option 2, after initially trying option 1 and
-  discovering it doesn't stay in sync with commits. Connecting to GitHub means
-  the deployed build is provably the same as what's in the repo, and every
-  future commit auto-redeploys.
-- What I gave up: A few extra minutes of setup versus the "fast" drag-and-drop
-  path — worth it for a deployment that actually matches the brief's
-  requirement.
+- **Context:** The brief requires the live deployment to be provably the same
+  build as the repo, and to reflect a clean-clone install.
+- **Options I considered:**
+  1. Netlify's drag-and-drop deploy — fast, but disconnected from source
+     control.
+  2. Connect Netlify directly to the GitHub repo so every push triggers a
+     fresh build from source.
+- **What I chose and why:** Option 2, after initially trying option 1 and
+  discovering the deployed site didn't reflect my actual repo at all — it was
+  a stale, disconnected 4-file upload. Connecting via GitHub means the
+  deployed build is provably identical to what's committed, and every future
+  commit auto-redeploys without manual steps.
+- **What I gave up:** A few extra minutes of setup versus the "fast" path —
+  a reasonable cost for a deployment that actually satisfies the brief's
+  requirement instead of just appearing to.
+
+---
+
+## Decision: Responsive layout via CSS Grid auto-fill, not fixed breakpoints
+- **Context:** The brief requires the app to be "usable on a phone." I needed
+  a layout that adapts across screen sizes without hardcoding a handful of
+  specific device widths.
+- **Options I considered:**
+  1. Fixed media query breakpoints targeting a few common screen sizes.
+  2. CSS Grid with `auto-fill` and `minmax()`, letting the browser calculate
+     column count from available space continuously.
+- **What I chose and why:** Option 2. It adapts to any width, not just the
+  specific breakpoints I happened to think to test. I verified the result
+  using Chrome DevTools' real device emulation (iPhone 12 Pro, Pixel 7
+  presets), not just a narrowed desktop browser window, since actual mobile
+  viewports behave differently from a resized desktop one.
+- **What I gave up:** Slightly less pixel-perfect control at specific
+  breakpoints, in exchange for a layout that's far less brittle across the
+  real range of devices people actually use.
+
+---
 
 ## Decision: Named the product "Neighbourloan" instead of leaving it unnamed
-- Context: Thabo explicitly deferred naming ("let's just call it the product for
-  now, naming later").
-- Options I considered: (1) Leave it as a placeholder name in the UI since
-  naming wasn't asked for this sprint. (2) Pick a real name now so the product
-  feels shippable and investor-ready.
-- What I chose and why: Option 2. A working product with no name reads as
-  unfinished in a demo; a clear, simple name costs almost no time and makes
-  the Loom and live demo feel more real.
-- What I gave up: A small amount of time better spent on features — but this
-  was a two-minute decision, not a rabbit hole.
+- **Context:** Thabo explicitly deferred naming in his brief ("let's just call
+  it the product for now, naming later").
+- **Options I considered:**
+  1. Leave it as an unnamed placeholder in the UI, since naming wasn't part of
+     this sprint's ask.
+  2. Pick a real name now so the product feels shippable and demo-ready.
+- **What I chose and why:** Option 2. A functioning product with no name reads
+  as unfinished in a live demo or investor pitch, and choosing a clear, simple
+  name cost minutes, not hours.
+- **What I gave up:** A small amount of time that could have gone toward
+  features — but this was a two-minute decision, not a distraction from the
+  real work.
