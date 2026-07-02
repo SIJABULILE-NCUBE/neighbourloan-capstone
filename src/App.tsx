@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Item, AuthUser } from "./data/types";
+import type { Item } from "./data/types";
 import { fetchItems } from "./data/items";
 import { BrowseScreen } from "./screens/BrowseScreen";
 import { ItemDetailScreen } from "./screens/ItemDetailScreen";
