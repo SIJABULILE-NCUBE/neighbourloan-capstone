@@ -62,3 +62,11 @@ export interface BookingDraft {
   /** null until the user has agreed to the owner's terms. */
   agreedToTerms: boolean;
 }
+/** A confirmed booking, saved locally once a user completes the flow. */
+export interface Booking {
+  id: string;
+  itemId: ItemId;
+  itemTitle: string;
+  range: AvailabilityRange;
+  confirmedAtISO: string;
+}
