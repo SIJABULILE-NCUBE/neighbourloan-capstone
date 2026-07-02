@@ -10,9 +10,10 @@
  *
  * Photo URLs use LoremFlickr (keyword-based placeholder images) instead
  * of the original random Picsum seeds, so images plausibly match their
- * item. Two items deliberately keep photoUrls: [] to preserve the
- * "no photo" empty-state test case the starter data intentionally
- * included.
+ * item. Simple, common single-word keywords are used since they return
+ * more reliable matches than compound/unusual terms. Two items keep
+ * photoUrls: [] deliberately, to preserve the "no photo" empty-state
+ * test case the starter data intentionally included.
  *
  * You may reshape how you load/serve this (a fake async fetch, a
  * context, a hook) — that architectural choice is yours to make
@@ -27,7 +28,7 @@ export const ITEMS: Item[] = [
     title: "Cordless Drill (18V)",
     category: "power-tools",
     description: "Solid drill, two batteries, works for most home jobs.",
-    photoUrls: ["https://loremflickr.com/600/400/drill,tool"],
+    photoUrls: ["https://loremflickr.com/600/400/drill"],
     price: { amountCents: 5000, period: "day" },
     owner: { id: "usr_a", displayName: "Naledi", rating: 4.8, ratingCount: 24, joinedISO: "2025-02-11" },
     distanceKm: 1.2,
@@ -52,8 +53,8 @@ export const ITEMS: Item[] = [
     category: "outdoor",
     description: "Great for driveways and walls. Bring your own hose.",
     photoUrls: [
-      "https://loremflickr.com/600/400/pressurewasher",
-      "https://loremflickr.com/600/400/hose,driveway",
+      "https://loremflickr.com/600/400/washer",
+      "https://loremflickr.com/600/400/hose",
     ],
     price: { amountCents: 12000, period: "day" },
     owner: { id: "usr_c", displayName: "Fatima", rating: 4.2, ratingCount: 6, joinedISO: "2025-11-02" },
@@ -66,7 +67,7 @@ export const ITEMS: Item[] = [
     title: "Stand Mixer",
     category: "kitchen",
     description: "For big baking days. Comes with whisk + dough hook.",
-    photoUrls: ["https://loremflickr.com/600/400/stand-mixer,kitchen"],
+    photoUrls: ["https://loremflickr.com/600/400/mixer"],
     price: { amountCents: 8000, period: "day" },
     owner: { id: "usr_d", displayName: "Grace", rating: 5.0, ratingCount: 2, joinedISO: "2026-01-19" },
     distanceKm: 0.6,
@@ -78,7 +79,7 @@ export const ITEMS: Item[] = [
     title: "Folding Tables (x4)",
     category: "party",
     description: "Set of four trestle tables. Good for events.",
-    photoUrls: ["https://loremflickr.com/600/400/foldingtable,event"],
+    photoUrls: ["https://loremflickr.com/600/400/table"],
     price: { amountCents: 15000, period: "day" },
     owner: { id: "usr_e", displayName: "Themba", rating: 3.9, ratingCount: 11, joinedISO: "2024-09-14" },
     distanceKm: 8.1,
@@ -102,7 +103,7 @@ export const ITEMS: Item[] = [
     title: "Tile Cutter",
     category: "hand-tools",
     description: "Manual tile cutter, up to 600mm.",
-    photoUrls: ["https://loremflickr.com/600/400/tilecutter,tools"],
+    photoUrls: ["https://loremflickr.com/600/400/tiles"],
     price: { amountCents: 3000, period: "day" },
     owner: { id: "usr_c", displayName: "Fatima", rating: 4.2, ratingCount: 6, joinedISO: "2025-11-02" },
     distanceKm: 4.7,
@@ -114,7 +115,7 @@ export const ITEMS: Item[] = [
     title: "Gazebo (3x3m)",
     category: "party",
     description: "Pop-up gazebo, white. One pole has tape on it, still fine.",
-    photoUrls: ["https://loremflickr.com/600/400/gazebo,tent"],
+    photoUrls: ["https://loremflickr.com/600/400/tent"],
     price: { amountCents: 0, period: "day" },
     owner: { id: "usr_e", displayName: "Themba", rating: 3.9, ratingCount: 11, joinedISO: "2024-09-14" },
     distanceKm: null,
@@ -124,8 +125,8 @@ export const ITEMS: Item[] = [
 ];
 
 /**
- * A fake async loader 
- 
+ * A fake async loader so you can practise typing data you don't
+ * control yet. Use it or replace it — your call, but justify it.
  */
 export function fetchItems(): Promise<Item[]> {
   return new Promise((resolve) => setTimeout(() => resolve(ITEMS), 400));
