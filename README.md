@@ -1,7 +1,10 @@
 # Neighbourloan
 
-**A neighbourhood tool & equipment lending marketplace — built as a founder
-capstone sprint for Melsoft Academy.**
+NeighbourLoan connects neighbours who want to lend or borrow tools and equipment instead of purchasing items they only need temporarily.
+
+The project simulates working with a non-technical founder who requested more features than could realistically be delivered within a single sprint. Rather than implementing every request, the focus was on building a reliable MVP while making informed engineering and product decisions.
+
+Several requested features were intentionally reshaped, deferred, or declined to prioritise usability, trust, and a high-quality user experience.
 
 > Read `BRIEF.md` first for full context. This README documents what was
 > actually built, the technologies used, and how to run it.
