@@ -2,15 +2,15 @@
 
 A modern frontend marketplace application that enables neighbours to lend and borrow tools and equipment within their local community.
 
-NeighbourLoan was designed as a Minimum Viable Product (MVP) that prioritises the core borrowing experience while demonstrating sound engineering judgement, clean React architecture, strong TypeScript practices, responsive design, accessibility, and maintainable code.
+NeighbourLoan was designed as a **Minimum Viable Product (MVP)** that prioritises the core borrowing experience while demonstrating sound engineering judgement, clean React architecture, strong TypeScript practices, responsive design, accessibility, and maintainable code.
 
-Rather than implementing every requested feature, the project focuses on building the right features well, documenting trade-offs, and delivering a polished user experience.
+Rather than implementing every requested feature, the project focuses on building the right features well, documenting engineering trade-offs, and delivering a polished user experience.
 
 ---
 
 ## Live Demo
 
-**Application**
+### Application
 
 https://neighbourloan.netlify.app/
 
@@ -24,7 +24,7 @@ https://github.com/SIJABULILE-NCUBE/neighbourloan-capstone
 
 ## Loom Walkthrough
 
-*Add your Loom presentation link here.*
+**Add your Loom presentation link here.**
 
 ---
 
@@ -44,17 +44,19 @@ https://github.com/SIJABULILE-NCUBE/neighbourloan-capstone
 - Supporting Documentation
 - Future Improvements
 - Known Limitations
+- Engineering Principles
+- Acknowledgements
 - Author
 
 ---
 
 # Project Overview
 
-NeighbourLoan is a community marketplace where neighbours can borrow and lend tools instead of purchasing equipment they may only need occasionally.
+NeighbourLoan is a community marketplace that allows neighbours to lend and borrow tools instead of purchasing equipment that may only be needed occasionally.
 
 The application demonstrates how a well-scoped MVP can solve a real-world problem while maintaining a clean user experience and scalable frontend architecture.
 
-Throughout development, emphasis was placed on:
+Throughout development, the focus was placed on:
 
 - Building only high-value functionality
 - Creating reusable React components
@@ -63,7 +65,7 @@ Throughout development, emphasis was placed on:
 - Designing for future scalability
 - Delivering a responsive and accessible user experience
 
-The project intentionally favours quality over quantity by delivering a complete borrowing workflow instead of numerous unfinished features.
+Rather than attempting to implement every requested feature, the application prioritises the complete borrowing journey and delivers it to a high standard.
 
 ---
 
@@ -72,12 +74,13 @@ The project intentionally favours quality over quantity by delivering a complete
 - React 18 with Functional Components
 - TypeScript (Strict Mode)
 - Vite Development Environment
-- Component-based Architecture
+- Component-Based Architecture
 - Strongly Typed Data Models
 - Responsive Mobile-First Design
 - Keyboard Accessible Interface
 - Modular Business Logic
 - Trust Score System
+- Local Booking Persistence
 - Continuous Deployment with Netlify
 - Clean Separation of UI and Business Logic
 
@@ -87,14 +90,15 @@ The project intentionally favours quality over quantity by delivering a complete
 
 NeighbourLoan was designed around a simple user journey:
 
-1. Browse available equipment
-2. Search for tools
-3. Filter listings
-4. View detailed item information
-5. Complete a booking request
-6. Authenticate before confirming the booking
+1. Browse available equipment.
+2. Search for tools.
+3. Filter listings.
+4. View detailed item information.
+5. Complete a booking request.
+6. Authenticate before confirming the booking.
+7. Review previously confirmed bookings.
 
-The objective was to create a smooth, intuitive booking experience while keeping the application lightweight and easy to extend.
+The objective was to create a simple, intuitive borrowing experience while keeping the application lightweight, maintainable, and easy to extend.
 
 ---
 
@@ -106,9 +110,9 @@ Users can:
 
 - Browse available tools and equipment
 - Search by tool name
-- Filter by category
+- Filter by category using toggleable filter chips
 - Filter by Free or Paid listings
-- View responsive listing cards
+- View responsive marketplace cards
 
 ---
 
@@ -128,11 +132,17 @@ Each listing displays:
 
 ## Trust Score
 
-Instead of displaying artificial urgency messages, each listing includes a Trust Score.
+Instead of displaying artificial urgency messages such as **"3 people are viewing this item right now"**, every listing includes a **Trust Score**.
 
-The Trust Score provides users with meaningful information that helps build confidence before borrowing equipment.
+The Trust Score is calculated using meaningful information already available within the data model, including:
 
-This approach encourages transparency and trust rather than relying on misleading urgency indicators.
+- Owner tenure
+- Average owner rating
+- Number of completed bookings
+
+Rather than creating fake urgency, this feature provides users with genuine information that helps build confidence before borrowing equipment.
+
+This approach encourages transparency, trust, and informed decision-making.
 
 ---
 
@@ -140,7 +150,7 @@ This approach encourages transparency and trust rather than relying on misleadin
 
 NeighbourLoan includes a complete multi-step booking process.
 
-```
+```text
 Browse Marketplace
         │
         ▼
@@ -154,64 +164,72 @@ Review Booking
         │
         ▼
 Booking Confirmation
+        │
+        ▼
+Saved to My Bookings
 ```
 
 The workflow keeps users informed throughout each stage and concludes with a clear confirmation screen.
+
+Confirmed bookings are saved locally and remain available from the **My Bookings** screen.
+
+---
+
+## My Bookings
+
+Once a booking has been confirmed, it is stored locally and can be viewed at any time from the **My Bookings** screen.
+
+This allows users to revisit previous bookings while also demonstrating local client-side persistence.
 
 ---
 
 ## Authentication
 
-Authentication is required only when a user is ready to confirm a booking.
+Authentication is requested only when a user is ready to confirm a booking.
 
-Allowing users to browse before signing in provides a better user experience while still supporting account creation when it becomes necessary.
+Allowing users to browse before signing in creates a smoother experience while still supporting account creation at the appropriate point in the user journey.
 
 ---
-
 # Technologies Used
 
 | Technology | Purpose |
 |------------|---------|
-| React 18 | Component-based UI development |
-| TypeScript | Static typing, maintainability and safer refactoring |
+| React 18 | Component-based user interface development |
+| TypeScript | Static typing, safer refactoring, and improved maintainability |
 | Vite | Fast development server and optimized production builds |
-| CSS3 | Custom responsive styling |
-| React Hooks | State management |
-| Netlify | Hosting and Continuous Deployment |
-| Git & GitHub | Version control |
+| CSS3 | Custom responsive styling without external UI frameworks |
+| React Hooks | State management and component lifecycle |
+| Browser localStorage | Client-side persistence of confirmed bookings |
+| Netlify | Application hosting and Continuous Deployment |
+| Git & GitHub | Version control and source code management |
 | Mock Typed Data | Simulated API-ready frontend data layer |
 
 ---
 
 # Application Architecture
 
-The application follows a modular architecture that separates presentation, business logic and data.
+NeighbourLoan follows a modular architecture that separates presentation, business logic, and data management. This approach improves maintainability, readability, and future scalability.
 
-```
-User
-
-↓
-
-Application Screens
-
-↓
-
-Reusable Components
-
-↓
-
-Business Logic
-
-↓
-
-Typed Data Layer
-
-↓
-
-Mock Marketplace Data
+```text
+                    User
+                      │
+                      ▼
+            Application Screens
+                      │
+                      ▼
+           Reusable UI Components
+                      │
+                      ▼
+              Business Logic (lib)
+                      │
+                      ▼
+             Typed Marketplace Data
+                      │
+                      ▼
+               Mock Data Source
 ```
 
-This structure keeps the application maintainable and makes it straightforward to replace the mock data with a real backend in future versions.
+The application has been structured so that the mock data layer can easily be replaced with a future REST API or backend service without requiring major changes to the user interface.
 
 ---
 
@@ -224,39 +242,51 @@ src
 │   ├── ItemCard.tsx          # Marketplace listing card
 │   └── TrustBadge.tsx        # Displays Trust Score
 │
-├── data/                     # Typed mock marketplace data
+├── data/                     # Strongly typed mock marketplace data
 │
 ├── lib/
-│   ├── booking.ts            # Booking logic
-│   └── trust.ts              # Trust Score calculations
+│   ├── booking.ts            # Booking duration and pricing calculations
+│   ├── trust.ts              # Trust Score calculations
+│   └── storage.ts            # Local booking persistence
 │
-├── screens/                  # Application screens
+├── screens/
+│   ├── BrowseScreen.tsx
+│   ├── ItemDetailScreen.tsx
+│   ├── BookingScreen.tsx
+│   ├── AuthScreen.tsx
+│   └── MyBookingsScreen.tsx
 │
 ├── App.tsx                   # Root application component
 ├── main.tsx                  # Application entry point
-└── styles.css                # Global styles
+└── styles.css                # Global application styles
 ```
 
 ---
 
 # Engineering Decisions
 
-Several deliberate engineering decisions were made throughout development.
+Several deliberate engineering decisions were made throughout the development of this application.
 
-These include:
+Rather than simply implementing functionality, emphasis was placed on creating a solution that remains maintainable, scalable, and user-focused.
+
+Some of the key decisions include:
 
 - Prioritising the complete booking journey over secondary functionality.
-- Building reusable components instead of repeating UI.
-- Keeping business logic separate from presentation components.
-- Using strict TypeScript typing throughout the project.
+- Building reusable components to reduce duplication and improve maintainability.
+- Separating business logic from presentation components.
+- Maintaining strict TypeScript typing throughout the application.
 - Structuring mock data to closely resemble a future REST API.
-- Designing mobile responsiveness from the beginning.
-- Building accessibility into the interface rather than treating it as an afterthought.
+- Designing for mobile responsiveness from the beginning rather than treating it as a final enhancement.
+- Building accessibility into the interface by ensuring keyboard navigation and clear visual hierarchy.
+- Adding local booking persistence so confirmed bookings remain available after a page refresh.
+- Using meaningful Trust Scores instead of artificial urgency indicators.
+- Carefully selecting and organising project folders to support future growth.
 
-These decisions improve maintainability, readability and future scalability.
+Each significant decision involved evaluating trade-offs between scope, complexity, user experience, and maintainability.
+
+A detailed explanation of these decisions, together with the alternatives considered and the reasoning behind each choice, is available in **DECISION-LOG.md**.
 
 ---
-
 # Installation
 
 Clone the repository.
@@ -265,13 +295,13 @@ Clone the repository.
 git clone https://github.com/SIJABULILE-NCUBE/neighbourloan-capstone.git
 ```
 
-Navigate into the project.
+Navigate into the project directory.
 
 ```bash
 cd neighbourloan-capstone
 ```
 
-Install dependencies.
+Install all project dependencies.
 
 ```bash
 npm install
@@ -283,7 +313,7 @@ Start the development server.
 npm run dev
 ```
 
-Open the local URL displayed in your terminal.
+Open the local URL displayed by Vite (typically `http://localhost:5173`) in your browser.
 
 ---
 
@@ -295,13 +325,13 @@ Start the development server.
 npm run dev
 ```
 
-Create a production build.
+Creates an optimized production build.
 
 ```bash
 npm run build
 ```
 
-Preview the production build.
+Preview the production build locally.
 
 ```bash
 npm run preview
@@ -317,16 +347,14 @@ npm run typecheck
 
 # Deployment
 
-NeighbourLoan is deployed using **Netlify**.
-
-The GitHub repository is connected directly to Netlify, enabling Continuous Deployment.
+NeighbourLoan is deployed using **Netlify**, with the GitHub repository connected for Continuous Deployment (CD).
 
 Every push to the `main` branch automatically:
 
-- installs dependencies
-- builds the project
-- deploys the latest version
-- publishes the live application
+- Installs project dependencies
+- Builds the production application
+- Deploys the latest version
+- Publishes the updated application online
 
 ### Build Command
 
@@ -340,63 +368,74 @@ npm run build
 dist
 ```
 
+The live application can be accessed here:
+
+**https://neighbourloan.netlify.app/**
+
 ---
 
 # Supporting Documentation
 
-This repository contains additional documentation explaining both the technical implementation and product decisions.
+In addition to the source code, this repository includes documentation explaining both the technical implementation and the product decisions made throughout development.
 
 | File | Description |
 |------|-------------|
-| BRIEF.md | Original project requirements |
-| FOUNDER-RESPONSE.md | Product decisions and responses to the founder |
-| DECISION-LOG.md | Engineering decisions and trade-offs |
-| AI-USAGE.md | Documentation of AI usage, validation and improvements |
-| PRESENTATION-GUIDE.md | Guide used for the project walkthrough |
+| **README.md** | Project overview, setup instructions, architecture and documentation |
+| **BRIEF.md** | Original project requirements |
+| **FOUNDER-RESPONSE.md** | Professional response explaining which features were implemented, deferred or reshaped, together with the reasoning behind those decisions |
+| **DECISION-LOG.md** | Engineering decisions, alternatives considered and trade-offs made throughout development |
+| **AI-USAGE.md** | Documentation of how AI was used during development, including validation, corrections and improvements |
+| **PRESENTATION-GUIDE.md** | Outline used during the project walkthrough presentation |
 
 ---
 
 # Future Improvements
 
-Future iterations of NeighbourLoan could include:
+The current implementation focuses on delivering a polished MVP. The project architecture has been intentionally designed so that additional functionality can be introduced without significant restructuring.
+
+Potential future enhancements include:
 
 - Backend API integration
-- User authentication with persistent sessions
-- Real-time messaging
+- Persistent user authentication
+- User profiles
+- Real-time messaging between borrowers and owners
 - Ratings and reviews
-- Interactive maps
+- Interactive map integration
 - Wishlist functionality
 - Push notifications
 - Offline support
 - Dark mode
-- Image uploads
+- Owner-uploaded images
 - Payment integration
+- Booking history synchronised across devices
+- Client-side routing with shareable URLs
+- Advanced search and filtering options
+- Admin dashboard for marketplace management
 
-The current architecture has been designed to make these enhancements easier to introduce in future releases.
+The modular architecture, typed data models and reusable component structure make these enhancements straightforward to introduce in future versions.
 
 ---
-
 # Known Limitations
 
-The current version represents an MVP and intentionally limits scope to deliver a polished core experience.
+NeighbourLoan represents a frontend Minimum Viable Product (MVP). The current implementation intentionally limits scope in order to deliver a polished, reliable, and maintainable core experience.
 
 Current limitations include:
 
-- Mock data instead of a live backend
-- No persistent authentication
-- No real-time updates
-- Placeholder images
-- No payment processing
-- Booking data is not permanently stored
-- Deep linking between pages is not currently supported
+- Marketplace data is mocked and not connected to a live backend service.
+- Authentication is simulated and does not include persistent user accounts.
+- Booking information is stored locally using browser localStorage and is not synchronised across multiple devices.
+- Real-time updates and messaging are not currently implemented.
+- Images are manually sourced stock photographs rather than user-uploaded content.
+- Payment processing has been intentionally excluded from this release.
+- Navigation is state-based, meaning individual pages cannot currently be accessed through shareable URLs.
 
-These limitations were accepted to prioritise quality, usability and maintainability within the project scope.
+These limitations were accepted deliberately to prioritise usability, code quality, maintainability, and delivery of the core borrowing experience.
 
 ---
 
 # Engineering Principles
 
-NeighbourLoan was developed using the following engineering principles:
+NeighbourLoan was developed around the following software engineering principles:
 
 - Separation of Concerns
 - Component Reusability
@@ -404,18 +443,39 @@ NeighbourLoan was developed using the following engineering principles:
 - Type Safety
 - Accessibility
 - Responsive Design
-- Scalability
 - Maintainability
+- Scalability
 - Product Thinking
 - Performance Optimisation
+- User-Centred Design
+
+These principles guided both technical implementation and product decisions throughout the project.
+
+---
+
+# Lessons Learned
+
+Building NeighbourLoan reinforced that successful software development extends beyond writing functional code.
+
+Some of the key lessons from this project include:
+
+- Scoping features effectively often delivers more value than attempting to implement everything.
+- Strong TypeScript models improve maintainability and reduce runtime errors.
+- Building reusable components simplifies future enhancements.
+- Clear documentation is just as important as clean code.
+- Product thinking and engineering judgement play an equally important role in delivering successful software.
+
+This project also highlighted the importance of balancing user experience, technical constraints, and business goals when making engineering decisions.
 
 ---
 
 # Acknowledgements
 
-This project demonstrates the importance of balancing technical implementation with product thinking.
+NeighbourLoan demonstrates that delivering value is not about implementing every feature request.
 
-A successful MVP is not measured by the number of features it contains, but by how effectively it solves a real user problem while remaining maintainable, scalable and enjoyable to use.
+Instead, successful software is built by understanding user needs, making thoughtful engineering decisions, embracing trade-offs, and delivering a reliable solution that solves the core problem well.
+
+Every design choice, implementation decision, and trade-off documented in this repository reflects that philosophy.
 
 ---
 
@@ -423,16 +483,28 @@ A successful MVP is not measured by the number of features it contains, but by h
 
 **Name:** Sijabulile Ncube
 
+**Role:** Frontend Developer
+
 **Project:** NeighbourLoan
 
 **Created:** 3 July 2026
 
-**GitHub:** https://github.com/SIJABULILE-NCUBE/neighbourloan-capstone
+**GitHub Repository:** https://github.com/SIJABULILE-NCUBE/neighbourloan-capstone
 
 **Live Application:** https://neighbourloan.netlify.app/
 
-**Loom Walkthrough:** *Add your Loom link here.*
+**Loom Walkthrough:** *(Add your Loom presentation link here.)*
 
 ---
 
-> *"Good software is not built by implementing every idea. It is built by making thoughtful decisions, understanding trade-offs, and delivering the greatest value with the time available."*
+## Final Thoughts
+
+NeighbourLoan was built to demonstrate more than technical implementation.
+
+The project showcases thoughtful product decision-making, clean frontend architecture, maintainable TypeScript code, responsive design, and an understanding that the success of a product depends as much on **choosing the right features** as it does on building them well.
+
+By focusing on the core user journey and documenting every significant engineering decision, the application reflects an approach centred on quality, usability, and long-term maintainability.
+
+---
+
+> **"Good software isn't defined by the number of features it contains. It's defined by the quality of the decisions behind those features."**
