@@ -8,7 +8,7 @@ Rather than implementing every requested feature, the project focuses on buildin
 
 ---
 
-## Live Demo
+## Netlify
 
 ### Application
 
@@ -24,8 +24,7 @@ https://github.com/SIJABULILE-NCUBE/neighbourloan-capstone
 
 ## Loom Walkthrough
 
-**Add your Loom presentation link here.**
-
+https://docs.google.com/document/d/1zYiS6Xv3Tn45fEcQCyjRFd4XOLIdn8ubhR6QXad_wqw/edit?usp=sharing
 ---
 
 # Table of Contents
@@ -493,7 +492,7 @@ Every design choice, implementation decision, and trade-off documented in this r
 
 **Live Application:** https://neighbourloan.netlify.app/
 
-**Loom Walkthrough:** *(Add your Loom presentation link here.)*
+**Loom Walkthrough:** https://docs.google.com/document/d/1zYiS6Xv3Tn45fEcQCyjRFd4XOLIdn8ubhR6QXad_wqw/edit?usp=sharing
 
 ---
 
